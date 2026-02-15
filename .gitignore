@@ -1,5 +1,19 @@
+# Rust build artifacts
 /target
-Cargo.lock
+**/*.rs.bk
+
+# IDE
+.vscode/
+.idea/
 *.swp
 *.swo
+*~
+
+# OS
 .DS_Store
+
+# Claude Code
+.claude/settings.local.json
+
+# Local environment overrides
+.env.local
