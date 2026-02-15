@@ -1,0 +1,33 @@
+[package]
+name = "gbe-sentinel"
+description = "Per-host VM lifecycle manager for GBE task execution"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+gbe-transport.workspace = true
+gbe-state-store.workspace = true
+async-trait.workspace = true
+bytes.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tokio-util.workspace = true
+tracing.workspace = true
+ulid.workspace = true
+
+# Sentinel-specific
+nix = { version = "0.29", features = ["socket", "process", "signal", "net"] }
+hyper = { version = "1", features = ["client", "http1"] }
+hyper-util = { version = "0.1", features = ["tokio"] }
+http-body-util = "0.1"
+toml = "0.8"
+hostname = "0.4"
+
+[dev-dependencies]
+gbe-transport-redis = { path = "../../../gbe-transport/crates/transport-redis" }
+gbe-state-store-redis = { path = "../../../gbe-transport/crates/state-store-redis" }
+tempfile = "3"

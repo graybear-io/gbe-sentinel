@@ -1,0 +1,33 @@
+[workspace]
+resolver = "2"
+members = ["crates/sentinel"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+repository = "https://github.com/graybear-io/gbe-sentinel"
+
+[workspace.dependencies]
+# External: gbe-transport ecosystem (path deps)
+gbe-transport = { path = "../gbe-transport/crates/transport" }
+gbe-state-store = { path = "../gbe-transport/crates/state-store" }
+
+# Async
+tokio = { version = "1", features = ["full"] }
+tokio-util = "0.7"
+async-trait = "0.1"
+
+# Observability
+tracing = "0.1"
+
+# Serialization
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Types
+bytes = "1"
+ulid = "1"
+
+# Error handling
+thiserror = "2"
