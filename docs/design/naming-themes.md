@@ -6,6 +6,17 @@ prefixes, config sections, and CLI output.
 
 ---
 
+## Collective Name: Ecumene
+
+**GBE = Gray Bear Ecumene** — a self-referring acronym. The Ecumene is the
+collection of all roles below. From Greek "the whole inhabited world", adopted
+by Forerunner lore as the name of the civilization itself.
+
+The roles are organs of the Ecumene. Sentinel guards, Watcher sweeps, Oracle
+routes — together they form the governing body.
+
+---
+
 ## Active: Forerunner (Ancient AI Hierarchy)
 
 Inspired by autonomous AI constructs guarding vast infrastructure.
