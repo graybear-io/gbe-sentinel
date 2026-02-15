@@ -7,7 +7,7 @@ license.workspace = true
 repository.workspace = true
 
 [dependencies]
-gbe-transport.workspace = true
+gbe-nexus.workspace = true
 gbe-state-store.workspace = true
 async-trait.workspace = true
 bytes.workspace = true
@@ -28,6 +28,6 @@ toml = "0.8"
 hostname = "0.4"
 
 [dev-dependencies]
-gbe-transport-redis = { path = "../../../gbe-transport/crates/transport-redis" }
-gbe-state-store-redis = { path = "../../../gbe-transport/crates/state-store-redis" }
+gbe-nexus-redis = { path = "../../../gbe-nexus/crates/nexus-redis" }
+gbe-state-store-redis = { path = "../../../gbe-nexus/crates/state-store-redis" }
 tempfile = "3"

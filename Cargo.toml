@@ -10,9 +10,9 @@ license = "MIT"
 repository = "https://github.com/graybear-io/gbe-sentinel"
 
 [workspace.dependencies]
-# External: gbe-transport ecosystem (path deps)
-gbe-transport = { path = "../gbe-transport/crates/transport" }
-gbe-state-store = { path = "../gbe-transport/crates/state-store" }
+# External: gbe-nexus ecosystem (path deps)
+gbe-nexus = { path = "../gbe-nexus/crates/nexus" }
+gbe-state-store = { path = "../gbe-nexus/crates/state-store" }
 
 # Async
 tokio = { version = "1", features = ["full"] }

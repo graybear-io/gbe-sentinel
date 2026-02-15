@@ -17,7 +17,7 @@ It is a bus participant — not a coordinator. Coordination lives in the bus top
 
 ---
 
-## Bus Integration (gbe-transport)
+## Bus Integration (gbe-nexus)
 
 Sentinel is a native bus participant using the same traits as watcher.
 
@@ -397,7 +397,7 @@ The operative is baked into the rootfs image.
 ## Crate Structure
 
 Standalone workspace at `/Users/bear/projects/gbe-sentinel/`.
-Depends on gbe-transport and gbe-state-store via path.
+Depends on gbe-nexus and gbe-state-store via path.
 
 ### Module Layout
 
@@ -445,9 +445,9 @@ license = "MIT"
 repository = "https://github.com/graybear-io/gbe-sentinel"
 
 [workspace.dependencies]
-# External: gbe-transport ecosystem (path deps)
-gbe-transport = { path = "../gbe-transport/crates/transport" }
-gbe-state-store = { path = "../gbe-transport/crates/state-store" }
+# External: gbe-nexus ecosystem (path deps)
+gbe-nexus = { path = "../gbe-nexus/crates/nexus" }
+gbe-state-store = { path = "../gbe-nexus/crates/state-store" }
 
 # Async
 tokio = { version = "1", features = ["full"] }
@@ -481,7 +481,7 @@ license.workspace = true
 repository.workspace = true
 
 [dependencies]
-gbe-transport.workspace = true
+gbe-nexus.workspace = true
 gbe-state-store.workspace = true
 async-trait.workspace = true
 bytes.workspace = true
@@ -502,8 +502,8 @@ toml = "0.8"
 hostname = "0.4"
 
 [dev-dependencies]
-gbe-transport-redis = { path = "../../gbe-transport/crates/transport-redis" }
-gbe-state-store-redis = { path = "../../gbe-transport/crates/state-store-redis" }
+gbe-nexus-redis = { path = "../../gbe-nexus/crates/nexus-redis" }
+gbe-state-store-redis = { path = "../../gbe-nexus/crates/state-store-redis" }
 tempfile = "3"
 ```
 

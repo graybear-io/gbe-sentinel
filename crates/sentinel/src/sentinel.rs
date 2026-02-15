@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
+use gbe_nexus::Transport;
 use gbe_state_store::StateStore;
-use gbe_transport::Transport;
 use tokio_util::sync::CancellationToken;
 
 use crate::config::SentinelConfig;

@@ -3,7 +3,7 @@ use std::io;
 #[derive(Debug, thiserror::Error)]
 pub enum SentinelError {
     #[error("transport error: {0}")]
-    Transport(#[from] gbe_transport::TransportError),
+    Transport(#[from] gbe_nexus::TransportError),
 
     #[error("state store error: {0}")]
     StateStore(#[from] gbe_state_store::StateStoreError),
