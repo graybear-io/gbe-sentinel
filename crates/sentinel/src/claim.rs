@@ -47,7 +47,10 @@ pub async fn claim_task(
             std::collections::HashMap::from([
                 ("worker".to_string(), Bytes::from(worker)),
                 ("updated_at".to_string(), Bytes::from(now.clone())),
-                ("timeout_at".to_string(), Bytes::from(timeout_at.to_string())),
+                (
+                    "timeout_at".to_string(),
+                    Bytes::from(timeout_at.to_string()),
+                ),
             ]),
         )
         .await?;

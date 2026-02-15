@@ -22,6 +22,7 @@ impl SlotTracker {
     }
 }
 
+#[allow(dead_code)]
 pub struct Sentinel {
     pub(crate) config: SentinelConfig,
     pub(crate) transport: Arc<dyn Transport>,

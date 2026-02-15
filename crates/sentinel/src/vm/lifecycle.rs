@@ -24,6 +24,12 @@ pub struct VmLifecycle {
     pub task_id: Option<String>,
 }
 
+impl Default for VmLifecycle {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl VmLifecycle {
     pub fn new() -> Self {
         Self {

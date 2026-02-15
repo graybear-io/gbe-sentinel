@@ -4,6 +4,7 @@ use crate::error::SentinelError;
 ///
 /// Handles: PUT /machine-config, PUT /boot-source, PUT /drives/*, PUT /vsock,
 /// PUT /actions (InstanceStart), etc.
+#[allow(dead_code)]
 pub struct VmManager {
     pub(crate) firecracker_bin: std::path::PathBuf,
 }
@@ -13,7 +14,10 @@ impl VmManager {
         Self { firecracker_bin }
     }
 
-    pub async fn create_vm(&self, _config: &super::config::FirecrackerConfig) -> Result<VmHandle, SentinelError> {
+    pub async fn create_vm(
+        &self,
+        _config: &super::config::FirecrackerConfig,
+    ) -> Result<VmHandle, SentinelError> {
         // TODO: spawn firecracker process, configure via API, start instance
         Err(SentinelError::Vm("not implemented".into()))
     }

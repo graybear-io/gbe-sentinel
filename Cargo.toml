@@ -5,6 +5,7 @@ members = ["crates/sentinel"]
 [workspace.package]
 version = "0.1.0"
 edition = "2024"
+authors = ["GrayBear <bear@graybear.io>"]
 license = "MIT"
 repository = "https://github.com/graybear-io/gbe-sentinel"
 

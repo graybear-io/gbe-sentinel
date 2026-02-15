@@ -17,11 +17,7 @@ impl OverlayManager {
         Self { overlay_dir }
     }
 
-    pub async fn create(
-        &self,
-        _base_image: &Path,
-        _vm_id: &str,
-    ) -> Result<PathBuf, SentinelError> {
+    pub async fn create(&self, _base_image: &Path, _vm_id: &str) -> Result<PathBuf, SentinelError> {
         // TODO: create CoW snapshot of base image
         // Options: cp --reflink=auto, qemu-img create -b, device-mapper
         Err(SentinelError::Vm("overlay create not implemented".into()))

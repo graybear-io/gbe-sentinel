@@ -19,9 +19,9 @@ It is a bus participant — not a coordinator. Coordination lives in the bus top
 
 ## Bus Integration (gbe-transport)
 
-Sentinel is a native bus participant using the same traits as watcher (sweeper).
+Sentinel is a native bus participant using the same traits as watcher.
 
-### Constructor Pattern (mirrors watcher/sweeper)
+### Constructor Pattern (mirrors watcher)
 
 ```rust
 pub struct Sentinel {
