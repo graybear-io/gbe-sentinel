@@ -1,4 +1,5 @@
 use std::sync::Arc;
+use std::sync::atomic::{AtomicU32, Ordering};
 
 use gbe_nexus::Transport;
 use gbe_state_store::StateStore;
@@ -7,18 +8,41 @@ use tokio_util::sync::CancellationToken;
 use crate::config::SentinelConfig;
 use crate::error::SentinelError;
 
+/// Tracks VM slot usage with atomic operations. Safe to share across
+/// concurrent task handlers without external locking.
 pub struct SlotTracker {
-    pub total: u32,
-    pub used: u32,
+    total: u32,
+    used: AtomicU32,
 }
 
 impl SlotTracker {
     pub fn new(total: u32) -> Self {
-        Self { total, used: 0 }
+        Self {
+            total,
+            used: AtomicU32::new(0),
+        }
     }
 
     pub fn available(&self) -> u32 {
-        self.total.saturating_sub(self.used)
+        self.total.saturating_sub(self.used.load(Ordering::Acquire))
+    }
+
+    /// Try to claim a slot. Returns true if successful.
+    pub fn try_claim(&self) -> bool {
+        self.used
+            .fetch_update(Ordering::AcqRel, Ordering::Acquire, |current| {
+                if current < self.total {
+                    Some(current + 1)
+                } else {
+                    None
+                }
+            })
+            .is_ok()
+    }
+
+    /// Release a previously claimed slot.
+    pub fn release(&self) {
+        self.used.fetch_sub(1, Ordering::Release);
     }
 }
 
@@ -36,6 +60,7 @@ impl Sentinel {
         transport: Arc<dyn Transport>,
         store: Arc<dyn StateStore>,
     ) -> Result<Self, SentinelError> {
+        config.validate()?;
         let slots = SlotTracker::new(config.slots);
         Ok(Self {
             config,

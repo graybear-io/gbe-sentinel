@@ -1,5 +1,12 @@
 use std::io;
 
+/// Sentinel error type.
+///
+/// **Convention**: Use `Display` (`{}`) for external-facing messages (bus
+/// publications, API responses). Use `Debug` (`{:?}`) only in internal
+/// logs at debug/trace level. `Display` output (from thiserror `#[error]`)
+/// is designed to be safe for external consumption. `Debug` output may
+/// include filesystem paths and internal identifiers.
 #[derive(Debug, thiserror::Error)]
 pub enum SentinelError {
     #[error("transport error: {0}")]
