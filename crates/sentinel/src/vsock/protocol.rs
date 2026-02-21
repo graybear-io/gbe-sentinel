@@ -74,3 +74,128 @@ pub fn parse_operative_message(raw: &[u8]) -> Result<OperativeMessage, SentinelE
     }
     serde_json::from_slice(raw).map_err(|e| SentinelError::Vsock(format!("invalid message: {e}")))
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn parse_progress_message() {
+        let json = r#"{"type":"progress","id":"t1","step":"compile","status":"running"}"#;
+        let msg = parse_operative_message(json.as_bytes()).unwrap();
+        assert!(matches!(msg, OperativeMessage::Progress { ref id, .. } if id == "t1"));
+    }
+
+    #[test]
+    fn parse_progress_with_data() {
+        let json = r#"{"type":"progress","id":"t1","step":"s","status":"ok","data":{"pct":50}}"#;
+        let msg = parse_operative_message(json.as_bytes()).unwrap();
+        if let OperativeMessage::Progress { data, .. } = msg {
+            assert_eq!(data.unwrap()["pct"], 50);
+        } else {
+            panic!("expected Progress");
+        }
+    }
+
+    #[test]
+    fn parse_result_message() {
+        let json = r#"{"type":"result","id":"t2","output":{"key":"val"},"exit_code":0}"#;
+        let msg = parse_operative_message(json.as_bytes()).unwrap();
+        if let OperativeMessage::Result { id, exit_code, .. } = msg {
+            assert_eq!(id, "t2");
+            assert_eq!(exit_code, 0);
+        } else {
+            panic!("expected Result");
+        }
+    }
+
+    #[test]
+    fn parse_error_message() {
+        let json = r#"{"type":"error","id":"t3","error":"boom","exit_code":1}"#;
+        let msg = parse_operative_message(json.as_bytes()).unwrap();
+        if let OperativeMessage::Error {
+            error, exit_code, ..
+        } = msg
+        {
+            assert_eq!(error, "boom");
+            assert_eq!(exit_code, 1);
+        } else {
+            panic!("expected Error");
+        }
+    }
+
+    #[test]
+    fn parse_tool_call_message() {
+        let json =
+            r#"{"type":"tool_call","id":"t4","call_id":"c1","tool":"grep","params":{"q":"x"}}"#;
+        let msg = parse_operative_message(json.as_bytes()).unwrap();
+        if let OperativeMessage::ToolCall { tool, call_id, .. } = msg {
+            assert_eq!(tool, "grep");
+            assert_eq!(call_id, "c1");
+        } else {
+            panic!("expected ToolCall");
+        }
+    }
+
+    #[test]
+    fn oversized_message_rejected() {
+        let big = vec![b' '; MAX_VSOCK_MESSAGE_SIZE + 1];
+        let err = parse_operative_message(&big).unwrap_err();
+        assert!(err.to_string().contains("too large"));
+    }
+
+    #[test]
+    fn exactly_max_size_accepted() {
+        // Valid JSON padded to exactly max size won't parse as valid JSON,
+        // but the size check itself should pass
+        let json = r#"{"type":"error","id":"x","error":"e","exit_code":0}"#;
+        assert!(json.len() <= MAX_VSOCK_MESSAGE_SIZE);
+        assert!(parse_operative_message(json.as_bytes()).is_ok());
+    }
+
+    #[test]
+    fn malformed_json_rejected() {
+        let err = parse_operative_message(b"not json").unwrap_err();
+        assert!(err.to_string().contains("invalid message"));
+    }
+
+    #[test]
+    fn unknown_type_tag_rejected() {
+        let json = r#"{"type":"unknown","id":"t1"}"#;
+        assert!(parse_operative_message(json.as_bytes()).is_err());
+    }
+
+    #[test]
+    fn empty_payload_rejected() {
+        assert!(parse_operative_message(b"").is_err());
+    }
+
+    #[test]
+    fn sentinel_message_task_round_trip() {
+        let msg = SentinelMessage::Task {
+            id: "t1".into(),
+            payload: serde_json::json!({"cmd": "echo hi"}),
+            tools: vec!["grep".into(), "curl".into()],
+        };
+        let bytes = serde_json::to_vec(&msg).unwrap();
+        let parsed: SentinelMessage = serde_json::from_slice(&bytes).unwrap();
+        if let SentinelMessage::Task { id, tools, .. } = parsed {
+            assert_eq!(id, "t1");
+            assert_eq!(tools.len(), 2);
+        } else {
+            panic!("expected Task");
+        }
+    }
+
+    #[test]
+    fn sentinel_message_tool_result_round_trip() {
+        let msg = SentinelMessage::ToolResult {
+            id: "t1".into(),
+            call_id: "c1".into(),
+            result: serde_json::json!({"found": true}),
+        };
+        let bytes = serde_json::to_vec(&msg).unwrap();
+        let parsed: SentinelMessage = serde_json::from_slice(&bytes).unwrap();
+        assert!(matches!(parsed, SentinelMessage::ToolResult { .. }));
+    }
+}

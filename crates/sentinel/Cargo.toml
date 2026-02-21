@@ -17,6 +17,8 @@ tokio-util.workspace = true
 tracing.workspace = true
 
 [dev-dependencies]
+async-trait.workspace = true
 gbe-nexus-redis = { path = "../../../gbe-nexus/crates/nexus-redis" }
 gbe-state-store-redis = { path = "../../../gbe-nexus/crates/state-store-redis" }
 tempfile = "3"
+tokio = { workspace = true, features = ["macros", "rt-multi-thread"] }
