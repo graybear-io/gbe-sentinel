@@ -9,23 +9,12 @@ repository.workspace = true
 [dependencies]
 gbe-nexus.workspace = true
 gbe-state-store.workspace = true
-async-trait.workspace = true
 bytes.workspace = true
 serde.workspace = true
 serde_json.workspace = true
 thiserror.workspace = true
-tokio.workspace = true
 tokio-util.workspace = true
 tracing.workspace = true
-ulid.workspace = true
-
-# Sentinel-specific
-nix = { version = "0.29", features = ["socket", "process", "signal", "net"] }
-hyper = { version = "1", features = ["client", "http1"] }
-hyper-util = { version = "0.1", features = ["tokio"] }
-http-body-util = "0.1"
-toml = "0.8"
-hostname = "0.4"
 
 [dev-dependencies]
 gbe-nexus-redis = { path = "../../../gbe-nexus/crates/nexus-redis" }

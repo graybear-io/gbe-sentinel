@@ -31,6 +31,7 @@ impl Default for VmLifecycle {
 }
 
 impl VmLifecycle {
+    #[must_use]
     pub fn new() -> Self {
         Self {
             state: VmState::Idle,

@@ -1,3 +1,5 @@
+#![allow(clippy::unused_async)] // stub implementations will need async when completed
+
 pub mod claim;
 pub mod config;
 pub mod error;

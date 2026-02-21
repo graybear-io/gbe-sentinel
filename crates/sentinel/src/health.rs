@@ -7,11 +7,17 @@ use crate::error::SentinelError;
 pub struct HealthPublisher;
 
 impl HealthPublisher {
+    /// # Errors
+    ///
+    /// Returns `SentinelError` on transport failure.
     pub async fn publish_beacon(&self) -> Result<(), SentinelError> {
         // TODO: publish heartbeat to gbe.events.sentinel.{host_id}.health
         Ok(())
     }
 
+    /// # Errors
+    ///
+    /// Returns `SentinelError` on transport failure.
     pub async fn publish_capacity(&self, _total: u32, _used: u32) -> Result<(), SentinelError> {
         // TODO: publish slot availability to gbe.events.sentinel.{host_id}.capacity
         Ok(())

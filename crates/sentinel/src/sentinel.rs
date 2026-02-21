@@ -16,6 +16,7 @@ pub struct SlotTracker {
 }
 
 impl SlotTracker {
+    #[must_use]
     pub fn new(total: u32) -> Self {
         Self {
             total,
@@ -55,6 +56,9 @@ pub struct Sentinel {
 }
 
 impl Sentinel {
+    /// # Errors
+    ///
+    /// Returns `SentinelError::Config` if config validation fails.
     pub async fn new(
         config: SentinelConfig,
         transport: Arc<dyn Transport>,
@@ -70,6 +74,9 @@ impl Sentinel {
         })
     }
 
+    /// # Errors
+    ///
+    /// Returns `SentinelError` on transport or state store failures.
     pub async fn run(&self, _token: CancellationToken) -> Result<(), SentinelError> {
         // TODO: implement run loop
         // 1. Subscribe to each configured task type queue

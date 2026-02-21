@@ -14,6 +14,7 @@ pub struct FirecrackerConfig {
 }
 
 impl FirecrackerConfig {
+    #[must_use]
     pub fn machine_config_json(&self) -> serde_json::Value {
         serde_json::json!({
             "vcpu_count": self.vcpus,
@@ -21,6 +22,7 @@ impl FirecrackerConfig {
         })
     }
 
+    #[must_use]
     pub fn boot_source_json(&self) -> serde_json::Value {
         serde_json::json!({
             "kernel_image_path": self.kernel_path.to_string_lossy(),
@@ -28,6 +30,7 @@ impl FirecrackerConfig {
         })
     }
 
+    #[must_use]
     pub fn rootfs_drive_json(&self) -> serde_json::Value {
         serde_json::json!({
             "drive_id": "rootfs",
@@ -37,6 +40,7 @@ impl FirecrackerConfig {
         })
     }
 
+    #[must_use]
     pub fn vsock_json(&self) -> serde_json::Value {
         serde_json::json!({
             "guest_cid": self.vsock_cid,

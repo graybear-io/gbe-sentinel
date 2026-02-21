@@ -60,6 +60,10 @@ pub enum SentinelMessage {
 }
 
 /// Deserialize an operative message with size limit enforcement.
+///
+/// # Errors
+///
+/// Returns `SentinelError::Vsock` if the message exceeds size limits or is malformed.
 pub fn parse_operative_message(raw: &[u8]) -> Result<OperativeMessage, SentinelError> {
     if raw.len() > MAX_VSOCK_MESSAGE_SIZE {
         return Err(SentinelError::Vsock(format!(

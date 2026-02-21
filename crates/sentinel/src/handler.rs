@@ -6,6 +6,9 @@ use crate::error::SentinelError;
 pub struct TaskHandler;
 
 impl TaskHandler {
+    /// # Errors
+    ///
+    /// Returns `SentinelError` on claim failure or VM provisioning error.
     pub async fn handle_message(&self, _payload: &[u8]) -> Result<(), SentinelError> {
         // TODO: implement message handling
         // 1. Deserialize envelope, extract state key

@@ -11,6 +11,9 @@ use crate::error::SentinelError;
 pub struct ToolProxy;
 
 impl ToolProxy {
+    /// # Errors
+    ///
+    /// Returns `SentinelError::Vm` on policy violation or execution failure.
     pub async fn handle_tool_call(
         &self,
         _tool: &str,

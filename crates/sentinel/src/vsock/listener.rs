@@ -7,6 +7,9 @@ use crate::error::SentinelError;
 pub struct VsockListener;
 
 impl VsockListener {
+    /// # Errors
+    ///
+    /// Returns `SentinelError` on bind or accept failure.
     pub async fn accept_loop(&self) -> Result<(), SentinelError> {
         // TODO: bind vsock listener, accept connections, demux by CID
         // Each connection gets a tokio task for reading OperativeMessages

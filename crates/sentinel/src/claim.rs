@@ -7,9 +7,17 @@ use crate::error::SentinelError;
 
 /// Attempts a CAS claim on a task in the state store.
 ///
-/// Flow: compare_and_swap(key, "state", "pending", "claimed")
-///   - Success → set worker, updated_at, timeout_at
-///   - Failure → return ClaimFailed error
+/// Flow: `compare_and_swap(key, "state", "pending", "claimed")`
+///   - Success → set worker, `updated_at`, `timeout_at`
+///   - Failure → return `ClaimFailed` error
+///
+/// # Errors
+///
+/// Returns `SentinelError::ClaimFailed` if the CAS fails, or a store error on I/O failure.
+///
+/// # Panics
+///
+/// Panics if the system clock is before the Unix epoch.
 pub async fn claim_task(
     store: &Arc<dyn StateStore>,
     state_key: &str,

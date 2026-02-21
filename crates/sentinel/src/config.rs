@@ -20,6 +20,10 @@ pub struct SentinelConfig {
 
 impl SentinelConfig {
     /// Validate all paths and identifiers after deserialization.
+    ///
+    /// # Errors
+    ///
+    /// Returns `SentinelError::Config` if any path or identifier is invalid.
     pub fn validate(&self) -> Result<(), SentinelError> {
         Self::validate_host_id(&self.host_id)?;
         Self::require_dir(&self.image_dir, "image_dir")?;
